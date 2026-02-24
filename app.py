@@ -781,6 +781,13 @@ if st.session_state.raw_df is not None:
     if st.session_state.clean_df is not None:
         st.sidebar.metric("Cleaned Rows", f"{len(st.session_state.clean_df):,}")
 
+# Restart button — always available at every step
+st.sidebar.markdown("---")
+if st.sidebar.button("🔄 Start Over", use_container_width=True):
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+    st.rerun()
+
 # ── Header ───────────────────────────────────────────────────────────────────
 step_idx = st.session_state.current_step
 step_label = STEPS[step_idx]
@@ -1648,7 +1655,4 @@ elif st.session_state.current_step == 6:
     {"- Generated AI-powered narrative insights" if narrative else ""}
     """)
 
-    if st.button("🔄 Start Over with New Dataset", use_container_width=True):
-        for key in list(st.session_state.keys()):
-            del st.session_state[key]
-        st.rerun()
+    st.info("Use the **Start Over** button in the sidebar to begin a new analysis.")
