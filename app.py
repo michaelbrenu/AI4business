@@ -173,61 +173,154 @@ div[data-testid="stExpander"] {
 
 /* ── Sidebar ── */
 section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0F172A 0%, #162032 100%);
-    border-right: 1px solid rgba(148,163,184,0.08);
+    background: linear-gradient(180deg, #0B1120 0%, #0F1A2E 50%, #0B1120 100%);
+    border-right: 1px solid rgba(6,182,212,0.08);
+}
+section[data-testid="stSidebar"] [data-testid="stMarkdown"] hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(6,182,212,0.15), transparent);
+    margin: 0.8rem 0;
 }
 
 /* ── Sidebar Logo/Title ── */
 .sidebar-logo {
-    text-align: center; padding: 1rem 0 0.5rem 0;
+    text-align: center; padding: 1.2rem 1rem 0.8rem 1rem;
+    position: relative;
+}
+.sidebar-logo::after {
+    content: '';
+    position: absolute; bottom: 0; left: 15%; right: 15%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(6,182,212,0.2), transparent);
 }
 .sidebar-logo .logo-icon {
-    font-size: 2.5rem; display: block; margin-bottom: 0.3rem;
+    font-size: 2.2rem; display: block; margin-bottom: 0.5rem;
+    filter: drop-shadow(0 2px 8px rgba(6,182,212,0.3));
 }
 .sidebar-logo .logo-text {
-    font-size: 1.1rem; font-weight: 800;
-    background: linear-gradient(135deg, #06B6D4, #34D399);
+    font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em;
+    background: linear-gradient(135deg, #22D3EE 0%, #06B6D4 50%, #0891B2 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 .sidebar-logo .logo-sub {
-    font-size: 0.7rem; color: rgba(148,163,184,0.6);
+    font-size: 0.65rem; color: rgba(148,163,184,0.45);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin-top: 0.2rem;
+}
+
+/* ── Sidebar Section Labels ── */
+.sidebar-section-label {
+    font-size: 0.65rem; font-weight: 700;
+    color: rgba(6,182,212,0.5);
     text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 0.3rem 0.8rem 0.4rem 0.8rem;
+    margin-top: 0.2rem;
 }
 
 /* ── Sidebar Progress Items ── */
 .sidebar-step {
-    display: flex; align-items: center; gap: 0.6rem;
-    padding: 0.45rem 0.8rem; margin: 0.2rem 0;
-    border-radius: 8px; font-size: 0.85rem;
-    transition: background 0.2s ease;
+    display: flex; align-items: center; gap: 0.65rem;
+    padding: 0.5rem 0.8rem; margin: 0.15rem 0.4rem;
+    border-radius: 8px; font-size: 0.82rem;
+    transition: all 0.25s ease;
+    position: relative;
+    letter-spacing: 0.01em;
+}
+.sidebar-step:hover {
+    background: rgba(6,182,212,0.04);
 }
 .sidebar-step-done {
+    color: rgba(52,211,153,0.85);
+}
+.sidebar-step-done:hover {
     color: #34D399;
 }
 .sidebar-step-done .step-icon {
-    width: 22px; height: 22px; border-radius: 50%;
-    background: rgba(52,211,153,0.2); display: inline-flex;
-    align-items: center; justify-content: center; font-size: 0.7rem;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: rgba(52,211,153,0.12);
+    border: 1px solid rgba(52,211,153,0.2);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.65rem;
+    flex-shrink: 0;
 }
 .sidebar-step-active {
-    background: rgba(6,182,212,0.12);
+    background: linear-gradient(135deg, rgba(6,182,212,0.1) 0%, rgba(14,116,144,0.08) 100%);
     color: #F1F5F9; font-weight: 600;
-    border-left: 3px solid #06B6D4;
+    border: 1px solid rgba(6,182,212,0.15);
+    box-shadow: 0 2px 12px rgba(6,182,212,0.08), inset 0 0 0 1px rgba(6,182,212,0.05);
 }
 .sidebar-step-active .step-icon {
-    width: 22px; height: 22px; border-radius: 50%;
-    background: linear-gradient(135deg, #0891B2, #06B6D4);
+    width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, #0E7490, #0891B2);
+    box-shadow: 0 2px 8px rgba(6,182,212,0.3);
     display: inline-flex; align-items: center; justify-content: center;
-    font-size: 0.7rem; color: white;
+    font-size: 0.65rem; color: white; font-weight: 700;
+    flex-shrink: 0;
 }
 .sidebar-step-pending {
-    color: rgba(148,163,184,0.4);
+    color: rgba(148,163,184,0.3);
 }
 .sidebar-step-pending .step-icon {
-    width: 22px; height: 22px; border-radius: 50%;
-    border: 1px solid rgba(148,163,184,0.2);
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 1px solid rgba(148,163,184,0.12);
+    background: rgba(148,163,184,0.03);
     display: inline-flex; align-items: center; justify-content: center;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
+    flex-shrink: 0;
+}
+
+/* ── Sidebar Inputs ── */
+section[data-testid="stSidebar"] [data-testid="stTextInput"] input {
+    background: rgba(6,182,212,0.04) !important;
+    border: 1px solid rgba(6,182,212,0.12) !important;
+    border-radius: 8px !important;
+    font-size: 0.8rem !important;
+    transition: border-color 0.2s ease !important;
+}
+section[data-testid="stSidebar"] [data-testid="stTextInput"] input:focus {
+    border-color: rgba(6,182,212,0.35) !important;
+    box-shadow: 0 0 0 2px rgba(6,182,212,0.08) !important;
+}
+section[data-testid="stSidebar"] .stSubheader {
+    font-size: 0.75rem !important; font-weight: 700 !important;
+    color: rgba(6,182,212,0.5) !important;
+    text-transform: uppercase !important; letter-spacing: 0.08em !important;
+}
+
+/* ── Sidebar Metrics ── */
+section[data-testid="stSidebar"] div[data-testid="stMetric"] {
+    background: rgba(6,182,212,0.04) !important;
+    border: 1px solid rgba(6,182,212,0.08) !important;
+    padding: 0.6rem 0.8rem !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+}
+section[data-testid="stSidebar"] div[data-testid="stMetric"]:hover {
+    transform: none !important;
+    background: rgba(6,182,212,0.06) !important;
+    border-color: rgba(6,182,212,0.15) !important;
+    box-shadow: none !important;
+}
+section[data-testid="stSidebar"] div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    font-size: 1.2rem !important;
+}
+
+/* ── Sidebar Buttons ── */
+section[data-testid="stSidebar"] button {
+    background: rgba(6,182,212,0.06) !important;
+    border: 1px solid rgba(6,182,212,0.12) !important;
+    border-radius: 8px !important;
+    font-size: 0.8rem !important;
+    color: rgba(148,163,184,0.8) !important;
+    transition: all 0.2s ease !important;
+}
+section[data-testid="stSidebar"] button:hover {
+    background: rgba(6,182,212,0.1) !important;
+    border-color: rgba(6,182,212,0.25) !important;
+    color: #F1F5F9 !important;
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(6,182,212,0.1) !important;
 }
 
 /* ── Dataframe ── */
@@ -375,13 +468,7 @@ button[data-baseweb="tab"]:hover {
     color: #06B6D4 !important;
 }
 
-/* ── Sidebar items pop ── */
-section[data-testid="stSidebar"] button {
-    transition: transform 0.15s ease, background 0.2s ease !important;
-}
-section[data-testid="stSidebar"] button:hover {
-    transform: translateX(3px) scale(1.02) !important;
-}
+/* ── Sidebar items (handled by sidebar-specific rules above) ── */
 
 /* ── Step pills interactive feel ── */
 .step-pill {
@@ -631,59 +718,66 @@ st.sidebar.markdown("""
     <span class="logo-sub">Data Intelligence Platform</span>
 </div>
 """, unsafe_allow_html=True)
-st.sidebar.markdown("---")
 
 # Progress tracker
-st.sidebar.markdown("**Progress**")
+st.sidebar.markdown('<div class="sidebar-section-label">Workflow</div>', unsafe_allow_html=True)
+
+steps_html = ""
 for i, step_name in enumerate(STEPS):
     icon = STEP_ICONS[i]
     if i < st.session_state.current_step:
-        st.sidebar.markdown(
+        steps_html += (
             f'<div class="sidebar-step sidebar-step-done">'
-            f'<span class="step-icon">✓</span> {icon} {step_name}</div>',
-            unsafe_allow_html=True)
+            f'<span class="step-icon">✓</span> {icon} {step_name}</div>'
+        )
     elif i == st.session_state.current_step:
-        st.sidebar.markdown(
+        steps_html += (
             f'<div class="sidebar-step sidebar-step-active">'
-            f'<span class="step-icon">{i+1}</span> {icon} {step_name}</div>',
-            unsafe_allow_html=True)
+            f'<span class="step-icon">{i+1}</span> {icon} {step_name}</div>'
+        )
     else:
-        st.sidebar.markdown(
+        steps_html += (
             f'<div class="sidebar-step sidebar-step-pending">'
-            f'<span class="step-icon">{i+1}</span> {icon} {step_name}</div>',
-            unsafe_allow_html=True)
+            f'<span class="step-icon">{i+1}</span> {icon} {step_name}</div>'
+        )
+st.sidebar.markdown(steps_html, unsafe_allow_html=True)
 
 # Navigation buttons
 st.sidebar.markdown("---")
 if st.session_state.current_step > 0:
-    if st.sidebar.button("⬅️ Previous Step"):
+    if st.sidebar.button("← Previous Step"):
         go_to_step(st.session_state.current_step - 1)
         st.rerun()
 
 # Quick jump (only to completed steps)
 if st.session_state.current_step > 1:
     st.sidebar.markdown("---")
-    st.sidebar.subheader("Jump To")
+    st.sidebar.markdown('<div class="sidebar-section-label">Jump To</div>', unsafe_allow_html=True)
     for i, step_name in enumerate(STEPS):
         if i < st.session_state.current_step:
-            if st.sidebar.button(f"{step_name}", key=f"jump_{i}"):
+            if st.sidebar.button(f"{STEP_ICONS[i]} {step_name}", key=f"jump_{i}"):
                 go_to_step(i)
                 st.rerun()
 
 # AI Settings
 st.sidebar.markdown("---")
-st.sidebar.subheader("AI Settings")
+st.sidebar.markdown('<div class="sidebar-section-label">AI Configuration</div>', unsafe_allow_html=True)
 api_key = st.sidebar.text_input("OpenAI API Key", type="password",
-                                 help="Required for AI-generated insights in Steps 6 & 7")
+                                 help="Required for AI-generated insights in Steps 6 & 7",
+                                 label_visibility="collapsed",
+                                 placeholder="sk-... paste your API key")
 ai_client = get_openai_client(api_key) if api_key else None
 
 # Dataset info
 if st.session_state.raw_df is not None:
     st.sidebar.markdown("---")
-    st.sidebar.subheader("Dataset Info")
+    st.sidebar.markdown('<div class="sidebar-section-label">Dataset</div>', unsafe_allow_html=True)
     df_info = st.session_state.raw_df
-    st.sidebar.metric("Rows", f"{len(df_info):,}")
-    st.sidebar.metric("Columns", f"{len(df_info.columns)}")
+    info_cols = st.sidebar.columns(2)
+    with info_cols[0]:
+        st.metric("Rows", f"{len(df_info):,}")
+    with info_cols[1]:
+        st.metric("Columns", f"{len(df_info.columns)}")
     if st.session_state.clean_df is not None:
         st.sidebar.metric("Cleaned Rows", f"{len(st.session_state.clean_df):,}")
 
