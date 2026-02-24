@@ -1206,6 +1206,7 @@ elif st.session_state.current_step == 3:
     st.markdown(f"*How is `{target_col}` distributed across your dataset?*")
     fig1 = chart_target_distribution(filtered_df, target_col)
     st.plotly_chart(fig1, use_container_width=True)
+    st.caption(f"Shows the frequency distribution of '{target_col}'. Use this to understand the spread, central tendency, and any skewness in your target variable.")
 
     # Chart 2: Correlation Scatter (if we have 2+ numeric cols)
     if len(numeric_cols) >= 1:
@@ -1226,6 +1227,7 @@ elif st.session_state.current_step == 3:
             color_col=scatter_color if scatter_color != "(none)" else None,
         )
         st.plotly_chart(fig2, use_container_width=True)
+        st.caption("Reveals the relationship between two numeric variables. Look for linear trends, clusters, or outliers. Color-coding adds a categorical dimension to spot group differences.")
 
     # Chart 3: Box plot by category
     if categorical_cols and (numeric_cols or target_col):
@@ -1240,6 +1242,7 @@ elif st.session_state.current_step == 3:
 
         fig3 = chart_boxplot_by_category(filtered_df, box_numeric, box_category)
         st.plotly_chart(fig3, use_container_width=True)
+        st.caption(f"Compares the distribution of '{box_numeric}' across each '{box_category}' group. The box shows the median and interquartile range, while whiskers and dots highlight outliers.")
 
     # Chart 4: Category breakdown
     if categorical_cols:
@@ -1249,6 +1252,7 @@ elif st.session_state.current_step == 3:
                                      categorical_cols, key="breakdown_cat")
         fig4 = chart_category_breakdown(filtered_df, breakdown_cat, target_col)
         st.plotly_chart(fig4, use_container_width=True)
+        st.caption(f"Breaks down the count and average '{target_col}' for each value in '{breakdown_cat}'. Helps identify which categories perform best or have the most records.")
 
     # Chart 5: Trend over time
     if time_col:
@@ -1261,6 +1265,7 @@ elif st.session_state.current_step == 3:
             group_col=trend_group if trend_group != "(none)" else None,
         )
         st.plotly_chart(fig5, use_container_width=True)
+        st.caption(f"Tracks how '{target_col}' changes over '{time_col}'. Useful for spotting upward or downward trends, seasonal patterns, and period-over-period shifts.")
 
     # Bonus: Correlation heatmap
     if len(numeric_cols) >= 2:
@@ -1269,6 +1274,7 @@ elif st.session_state.current_step == 3:
         heatmap_cols = [c for c in ([target_col] + numeric_cols if target_col not in numeric_cols else numeric_cols) if c in filtered_df.columns]
         fig_heat = chart_correlation_heatmap(filtered_df, heatmap_cols)
         st.plotly_chart(fig_heat, use_container_width=True)
+        st.caption("Displays pairwise correlations between all numeric variables. Values close to +1 or -1 indicate strong relationships, while values near 0 suggest little linear association.")
 
     st.markdown("---")
     if st.button("➡️ Continue to Predictions", type="primary", use_container_width=True):
