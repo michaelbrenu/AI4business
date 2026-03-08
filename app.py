@@ -13,7 +13,7 @@ from src.data_cleaner import apply_cleaning_actions, get_dynamic_filter_options,
 from src.visualizations import (
     chart_target_distribution, chart_correlation_scatter,
     chart_boxplot_by_category, chart_category_breakdown,
-    chart_trend_over_time, chart_correlation_heatmap,
+    chart_trend_over_time,
 )
 from src.predictive_model import train_model, predict_single
 from src.ai_narratives import get_openai_client, generate_data_summary, generate_visualization_insight, generate_predictive_insight, generate_full_report
@@ -1300,14 +1300,37 @@ elif st.session_state.current_step == 3:
         st.plotly_chart(fig5, use_container_width=True)
         st.caption(f"Tracks how '{target_col}' changes over '{time_col}'. Useful for spotting upward or downward trends, seasonal patterns, and period-over-period shifts.")
 
-    # Bonus: Correlation heatmap
+    # Bonus: Parallel Coordinates
     if len(numeric_cols) >= 2:
         st.markdown("---")
-        st.markdown("#### Correlation Heatmap")
-        heatmap_cols = [c for c in ([target_col] + numeric_cols if target_col not in numeric_cols else numeric_cols) if c in filtered_df.columns]
-        fig_heat = chart_correlation_heatmap(filtered_df, heatmap_cols)
-        st.plotly_chart(fig_heat, use_container_width=True)
-        st.caption("Displays pairwise correlations between all numeric variables. Values close to +1 or -1 indicate strong relationships, while values near 0 suggest little linear association.")
+        st.markdown("#### 6. Parallel Coordinates")
+        pc_cols = [c for c in ([target_col] + numeric_cols if target_col not in numeric_cols else numeric_cols) if c in filtered_df.columns]
+        target_series = filtered_df[target_col]
+        if target_series.dtype == object or str(target_series.dtype) == "category":
+            unique_vals = list(target_series.unique())
+            color_vals = target_series.map({v: i for i, v in enumerate(unique_vals)})
+            colorscale = "Viridis"
+        else:
+            color_vals = pd.to_numeric(target_series, errors="coerce").fillna(0)
+            colorscale = "Plasma"
+        dimensions = []
+        for col in pc_cols:
+            col_data = pd.to_numeric(filtered_df[col], errors="coerce")
+            if col_data.notna().sum() > 0:
+                dimensions.append(dict(
+                    range=[col_data.min(), col_data.max()],
+                    label=col.replace("_", " ").title(),
+                    values=col_data.fillna(col_data.median())
+                ))
+        fig_pc = go.Figure(go.Parcoords(
+            line=dict(color=color_vals, colorscale=colorscale, showscale=True,
+                      colorbar=dict(title=target_col.replace("_", " ").title())),
+            dimensions=dimensions
+        ))
+        fig_pc.update_layout(height=420, margin=dict(l=80, r=80, t=30, b=30),
+                             paper_bgcolor="rgba(0,0,0,0)", font=dict(color="#CBD5E1"))
+        st.plotly_chart(fig_pc, use_container_width=True)
+        st.caption("Each line represents one record across all numeric features. Lines are colored by the target variable — drag axes to reorder or filter ranges and spot multi-variable patterns.")
 
     st.markdown("---")
     if st.button("➡️ Continue to Predictions", type="primary", use_container_width=True):
