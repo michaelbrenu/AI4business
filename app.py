@@ -117,23 +117,46 @@ div[data-testid="stMetric"] [data-testid="stMetricValue"] {
 /* ── Feature Cards Grid ── */
 .feature-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 0.8rem; margin: 1.2rem 0;
+    gap: 0.9rem; margin: 1.2rem 0;
 }
 .feature-card {
-    background: rgba(30,41,59,0.6);
-    border: 1px solid rgba(148,163,184,0.1);
-    border-radius: 12px; padding: 1.2rem; text-align: center;
-    transition: all 0.25s ease;
+    background: linear-gradient(145deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.85) 100%);
+    border: 1px solid rgba(148,163,184,0.15);
+    border-radius: 14px; padding: 1.4rem 1rem; text-align: center;
+    transition: all 0.3s ease; position: relative; overflow: hidden;
 }
-.feature-card:hover {
-    background: rgba(6,182,212,0.08);
-    border-color: rgba(6,182,212,0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(6,182,212,0.12);
+.feature-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; border-radius: 14px 14px 0 0;
 }
-.feature-card .icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
-.feature-card .title { font-weight: 600; font-size: 0.9rem; color: #F1F5F9; }
-.feature-card .desc { font-size: 0.75rem; color: rgba(148,163,184,0.7); margin-top: 0.2rem; }
+.card-blue::before   { background: linear-gradient(90deg,#2563EB,#60A5FA); }
+.card-purple::before { background: linear-gradient(90deg,#7C3AED,#A78BFA); }
+.card-green::before  { background: linear-gradient(90deg,#059669,#34D399); }
+.card-amber::before  { background: linear-gradient(90deg,#D97706,#FCD34D); }
+.card-pink::before   { background: linear-gradient(90deg,#DB2777,#F472B6); }
+.card-cyan::before   { background: linear-gradient(90deg,#0E7490,#22D3EE); }
+.card-indigo::before { background: linear-gradient(90deg,#4338CA,#818CF8); }
+.card-blue:hover   { border-color:rgba(96,165,250,0.5);   box-shadow:0 14px 32px rgba(59,130,246,0.25); }
+.card-purple:hover { border-color:rgba(167,139,250,0.5);  box-shadow:0 14px 32px rgba(124,58,237,0.25); }
+.card-green:hover  { border-color:rgba(52,211,153,0.5);   box-shadow:0 14px 32px rgba(16,185,129,0.25); }
+.card-amber:hover  { border-color:rgba(252,211,77,0.5);   box-shadow:0 14px 32px rgba(245,158,11,0.25); }
+.card-pink:hover   { border-color:rgba(244,114,182,0.5);  box-shadow:0 14px 32px rgba(236,72,153,0.25); }
+.card-cyan:hover   { border-color:rgba(34,211,238,0.5);   box-shadow:0 14px 32px rgba(6,182,212,0.25); }
+.card-indigo:hover { border-color:rgba(129,140,248,0.5);  box-shadow:0 14px 32px rgba(99,102,241,0.25); }
+.feature-card .icon-wrap {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 0.7rem; font-size: 1.5rem;
+}
+.card-blue   .icon-wrap { background:rgba(59,130,246,0.15);  border:1px solid rgba(96,165,250,0.3); }
+.card-purple .icon-wrap { background:rgba(124,58,237,0.15);  border:1px solid rgba(167,139,250,0.3); }
+.card-green  .icon-wrap { background:rgba(16,185,129,0.15);  border:1px solid rgba(52,211,153,0.3); }
+.card-amber  .icon-wrap { background:rgba(245,158,11,0.15);  border:1px solid rgba(252,211,77,0.3); }
+.card-pink   .icon-wrap { background:rgba(236,72,153,0.15);  border:1px solid rgba(244,114,182,0.3); }
+.card-cyan   .icon-wrap { background:rgba(6,182,212,0.15);   border:1px solid rgba(34,211,238,0.3); }
+.card-indigo .icon-wrap { background:rgba(99,102,241,0.15);  border:1px solid rgba(129,140,248,0.3); }
+.feature-card .title { font-weight: 700; font-size: 0.95rem; color: #F8FAFC; margin-bottom: 0.15rem; }
+.feature-card .desc  { font-size: 0.78rem; color: #94A3B8; margin-top: 0.2rem; font-weight: 500; }
 
 /* ── Upload Area ── */
 div[data-testid="stFileUploader"] {
@@ -493,7 +516,6 @@ button[data-baseweb="tab"]:hover {
 }
 .feature-card:hover {
     transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 12px 30px rgba(6,182,212,0.18);
 }
 
 /* ── Forms ── */
@@ -825,38 +847,38 @@ if st.session_state.current_step == 0:
 
     st.markdown("""
     <div class="feature-grid">
-        <div class="feature-card">
-            <div class="icon">📁</div>
+        <div class="feature-card card-blue">
+            <div class="icon-wrap">📁</div>
             <div class="title">Upload</div>
             <div class="desc">CSV or Excel files</div>
         </div>
-        <div class="feature-card">
-            <div class="icon">🔍</div>
+        <div class="feature-card card-purple">
+            <div class="icon-wrap">🔍</div>
             <div class="title">Profile</div>
             <div class="desc">Auto-detect issues</div>
         </div>
-        <div class="feature-card">
-            <div class="icon">🧹</div>
+        <div class="feature-card card-green">
+            <div class="icon-wrap">🧹</div>
             <div class="title">Clean</div>
             <div class="desc">Fix data quality</div>
         </div>
-        <div class="feature-card">
-            <div class="icon">📈</div>
+        <div class="feature-card card-amber">
+            <div class="icon-wrap">📈</div>
             <div class="title">Visualize</div>
             <div class="desc">Interactive charts</div>
         </div>
-        <div class="feature-card">
-            <div class="icon">🔮</div>
+        <div class="feature-card card-pink">
+            <div class="icon-wrap">🔮</div>
             <div class="title">Predict</div>
             <div class="desc">ML predictions</div>
         </div>
-        <div class="feature-card">
-            <div class="icon">🤖</div>
+        <div class="feature-card card-cyan">
+            <div class="icon-wrap">🤖</div>
             <div class="title">AI Insights</div>
             <div class="desc">GPT narratives</div>
         </div>
-        <div class="feature-card">
-            <div class="icon">📄</div>
+        <div class="feature-card card-indigo">
+            <div class="icon-wrap">📄</div>
             <div class="title">Report</div>
             <div class="desc">PDF export</div>
         </div>
