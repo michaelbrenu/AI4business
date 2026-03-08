@@ -95,23 +95,26 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
 /* ── Metric Cards ── */
 div[data-testid="stMetric"] {
-    background: linear-gradient(135deg, rgba(6,182,212,0.06) 0%, rgba(14,116,144,0.08) 100%);
-    border: 1px solid rgba(6,182,212,0.18);
+    background: linear-gradient(135deg, #162032 0%, #1a2d44 100%);
+    border: 1px solid rgba(6,182,212,0.3);
     border-radius: 12px; padding: 1rem 1.2rem;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 div[data-testid="stMetric"]:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(6,182,212,0.18);
+    box-shadow: 0 8px 30px rgba(6,182,212,0.22);
 }
 div[data-testid="stMetric"] label {
-    color: rgba(148,163,184,0.8) !important;
-    font-weight: 600; font-size: 0.75rem;
+    color: #94A3B8 !important;
+    font-weight: 700; font-size: 0.75rem;
     text-transform: uppercase; letter-spacing: 0.06em;
 }
 div[data-testid="stMetric"] [data-testid="stMetricValue"] {
-    font-weight: 700; font-size: 1.7rem; color: #F1F5F9;
+    font-weight: 800; font-size: 1.7rem; color: #F8FAFC !important;
+}
+div[data-testid="stMetric"] [data-testid="stMetricDelta"] {
+    font-weight: 600; font-size: 0.85rem;
 }
 
 /* ── Feature Cards Grid ── */
@@ -478,8 +481,8 @@ div[data-testid="stDataFrame"]:hover {
 /* ── Metric Cards (enhance existing) ── */
 div[data-testid="stMetric"]:hover {
     transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 35px rgba(6,182,212,0.22);
-    border-color: rgba(6,182,212,0.4) !important;
+    box-shadow: 0 12px 35px rgba(6,182,212,0.3);
+    border-color: rgba(6,182,212,0.55) !important;
 }
 
 /* ── Tabs ── */
