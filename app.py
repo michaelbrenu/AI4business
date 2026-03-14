@@ -546,6 +546,12 @@ div[data-testid="stForm"]:hover {
     background: linear-gradient(90deg, transparent, rgba(6,182,212,0.25), transparent);
 }
 
+/* ── Model badge pulse ── */
+@keyframes pulse-badge {
+    0%, 100% { box-shadow: 0 0 8px rgba(245,158,11,0.6), 0 2px 6px rgba(0,0,0,0.3); }
+    50%       { box-shadow: 0 0 18px rgba(245,158,11,0.95), 0 2px 10px rgba(0,0,0,0.4); }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -872,7 +878,16 @@ step_idx = st.session_state.current_step
 step_label = STEPS[step_idx]
 step_icon = STEP_ICONS[step_idx]
 
-_model_badge = ' <span style="font-size:0.75rem;font-weight:600;background:rgba(255,255,255,0.2);padding:2px 10px;border-radius:20px;vertical-align:middle;letter-spacing:0.03em;">gpt-4o-mini</span>' if ai_client else ""
+_model_badge = (
+    ' <span style="display:inline-flex;align-items:center;gap:5px;'
+    'font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;'
+    'background:linear-gradient(135deg,#F59E0B 0%,#EF4444 100%);'
+    'color:#fff;padding:5px 14px;border-radius:20px;vertical-align:middle;'
+    'box-shadow:0 0 10px rgba(245,158,11,0.7),0 2px 6px rgba(0,0,0,0.35);'
+    'border:1.5px solid rgba(255,255,255,0.35);'
+    'animation:pulse-badge 2s ease-in-out infinite;">'
+    '⚡ gpt-4o-mini</span>'
+) if ai_client else ""
 st.markdown(f"""
 <div class="main-header">
     <h1>📊 AI-Powered Data Analysis & Visualization{_model_badge}</h1>
