@@ -1014,7 +1014,10 @@ elif st.session_state.current_step == 1:
     if profile["issues"]:
         st.markdown("### ⚠️ Data Issues Found")
         issues_df = pd.DataFrame(profile["issues"])
+        severity_order = {"high": 0, "medium": 1, "low": 2}
         severity_colors = {"high": "🔴", "medium": "🟡", "low": "🟢"}
+        issues_df["_order"] = issues_df["severity"].map(severity_order)
+        issues_df = issues_df.sort_values("_order").drop(columns="_order")
         issues_df["Severity"] = issues_df["severity"].map(severity_colors)
         display_issues = issues_df[["Severity", "column", "type", "description", "fix"]].copy()
         display_issues.columns = ["Severity", "Column", "Issue Type", "Description", "Suggested Fix"]
