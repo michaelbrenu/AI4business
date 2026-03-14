@@ -6,6 +6,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
+from pathlib import Path
 
 from src.data_loader import load_uploaded_file, load_sample_data
 from src.data_profiler import profile_dataset, suggest_column_mapping, generate_cleaning_plan
@@ -785,12 +786,50 @@ if st.session_state.current_step > 1:
                 st.rerun()
 
 # AI Settings
+_SECRETS_FILE = Path(__file__).parent / ".streamlit" / "secrets.toml"
+
+def _load_saved_api_key():
+    """Read the OpenAI key from secrets.toml, return empty string if absent."""
+    if _SECRETS_FILE.exists():
+        for line in _SECRETS_FILE.read_text().splitlines():
+            if line.startswith("OPENAI_API_KEY"):
+                return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return ""
+
+def _save_api_key(key: str):
+    """Persist the key in secrets.toml (creates the file if needed)."""
+    _SECRETS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    # Re-build the file: keep non-key lines, then append the key line
+    lines = []
+    if _SECRETS_FILE.exists():
+        lines = [l for l in _SECRETS_FILE.read_text().splitlines()
+                 if not l.startswith("OPENAI_API_KEY")]
+    lines.append(f'OPENAI_API_KEY = "{key}"')
+    _SECRETS_FILE.write_text("\n".join(lines) + "\n")
+
 st.sidebar.markdown("---")
 st.sidebar.markdown('<div class="sidebar-section-label">AI Configuration</div>', unsafe_allow_html=True)
-api_key = st.sidebar.text_input("OpenAI API Key", type="password",
-                                 help="Required for AI-generated insights in Steps 6 & 7",
-                                 label_visibility="collapsed",
-                                 placeholder="sk-... paste your API key")
+
+_default_key = _load_saved_api_key()
+api_key = st.sidebar.text_input(
+    "OpenAI API Key", type="password",
+    help="Required for AI-generated insights in Steps 6 & 7",
+    label_visibility="collapsed",
+    placeholder="sk-... paste your API key",
+    value=_default_key,
+)
+_save_col, _status_col = st.sidebar.columns([1, 1])
+with _save_col:
+    if st.button("💾 Save key", use_container_width=True, key="save_api_key_btn"):
+        if api_key:
+            _save_api_key(api_key)
+            st.sidebar.success("Key saved!")
+        else:
+            st.sidebar.warning("No key to save.")
+with _status_col:
+    if _default_key:
+        st.sidebar.caption("✅ Key loaded")
+
 ai_client = get_openai_client(api_key) if api_key else None
 
 # Dataset info
