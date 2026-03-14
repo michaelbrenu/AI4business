@@ -789,7 +789,15 @@ if st.session_state.current_step > 1:
 _SECRETS_FILE = Path(__file__).parent / ".streamlit" / "secrets.toml"
 
 def _load_saved_api_key():
-    """Read the OpenAI key from secrets.toml, return empty string if absent."""
+    """Load API key: st.secrets first (Streamlit Cloud), then local secrets.toml."""
+    # 1. Streamlit Cloud / secrets dashboard
+    try:
+        key = st.secrets.get("OPENAI_API_KEY", "")
+        if key:
+            return key
+    except Exception:
+        pass
+    # 2. Local secrets.toml file
     if _SECRETS_FILE.exists():
         for line in _SECRETS_FILE.read_text().splitlines():
             if line.startswith("OPENAI_API_KEY"):
@@ -797,15 +805,18 @@ def _load_saved_api_key():
     return ""
 
 def _save_api_key(key: str):
-    """Persist the key in secrets.toml (creates the file if needed)."""
-    _SECRETS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    # Re-build the file: keep non-key lines, then append the key line
-    lines = []
-    if _SECRETS_FILE.exists():
-        lines = [l for l in _SECRETS_FILE.read_text().splitlines()
-                 if not l.startswith("OPENAI_API_KEY")]
-    lines.append(f'OPENAI_API_KEY = "{key}"')
-    _SECRETS_FILE.write_text("\n".join(lines) + "\n")
+    """Persist the key to local secrets.toml. Returns (success, message)."""
+    try:
+        _SECRETS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        lines = []
+        if _SECRETS_FILE.exists():
+            lines = [l for l in _SECRETS_FILE.read_text().splitlines()
+                     if not l.startswith("OPENAI_API_KEY")]
+        lines.append(f'OPENAI_API_KEY = "{key}"')
+        _SECRETS_FILE.write_text("\n".join(lines) + "\n")
+        return True, "Key saved!"
+    except OSError:
+        return False, None  # read-only filesystem (e.g. Streamlit Cloud)
 
 st.sidebar.markdown("---")
 st.sidebar.markdown('<div class="sidebar-section-label">AI Configuration</div>', unsafe_allow_html=True)
@@ -822,8 +833,11 @@ _save_col, _status_col = st.sidebar.columns([1, 1])
 with _save_col:
     if st.button("💾 Save key", use_container_width=True, key="save_api_key_btn"):
         if api_key:
-            _save_api_key(api_key)
-            st.sidebar.success("Key saved!")
+            ok, msg = _save_api_key(api_key)
+            if ok:
+                st.sidebar.success(msg)
+            else:
+                st.sidebar.info("Add `OPENAI_API_KEY` to your Streamlit Cloud secrets to persist it.")
         else:
             st.sidebar.warning("No key to save.")
 with _status_col:
