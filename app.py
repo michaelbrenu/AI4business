@@ -973,7 +973,6 @@ if st.session_state.current_step == 0:
                 st.session_state.raw_df = df
                 st.session_state.file_name = uploaded_file.name
                 st.success(f"Loaded **{uploaded_file.name}** — {len(df):,} rows × {len(df.columns)} columns")
-                st.dataframe(df.head(10), use_container_width=True)
 
     if st.session_state.raw_df is not None:
         st.markdown("---")
