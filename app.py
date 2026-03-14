@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 from datetime import datetime
 from pathlib import Path
 
-from src.data_loader import load_uploaded_file, load_sample_data
+from src.data_loader import load_uploaded_file
 from src.data_profiler import profile_dataset, suggest_column_mapping, generate_cleaning_plan
 from src.data_cleaner import apply_cleaning_actions, get_dynamic_filter_options, apply_dynamic_filters
 from src.visualizations import (
@@ -959,38 +959,21 @@ if st.session_state.current_step == 0:
 
     st.markdown("Upload any dataset — sales, education, health, finance, or anything else!")
 
-    col_upload, col_sample = st.columns(2)
-
-    with col_upload:
-        st.markdown("**Option A: Upload your own file**")
-        uploaded_file = st.file_uploader(
-            "Choose a CSV or Excel file",
-            type=["csv", "xlsx", "xls"],
-            help="Upload any tabular dataset"
-        )
-        if uploaded_file:
-            with st.spinner("Reading file..."):
-                df, error = load_uploaded_file(uploaded_file)
-                if error:
-                    st.error(error)
-                else:
-                    st.session_state.raw_df = df
-                    st.session_state.file_name = uploaded_file.name
-                    st.success(f"Loaded **{uploaded_file.name}** — {len(df):,} rows × {len(df.columns)} columns")
-                    st.dataframe(df.head(10), use_container_width=True)
-
-    with col_sample:
-        st.markdown("**Option B: Use sample dataset**")
-        st.markdown("Try the built-in education dataset with 1,485 student records.")
-        if st.button("📚 Load Sample Education Data", use_container_width=True):
-            sample = load_sample_data()
-            if sample is not None:
-                st.session_state.raw_df = sample
-                st.session_state.file_name = "education_data.csv (sample)"
-                st.success(f"Loaded sample dataset — {len(sample):,} rows × {len(sample.columns)} columns")
-                st.rerun()
+    uploaded_file = st.file_uploader(
+        "Choose a CSV or Excel file",
+        type=["csv", "xlsx", "xls"],
+        help="Upload any tabular dataset"
+    )
+    if uploaded_file:
+        with st.spinner("Reading file..."):
+            df, error = load_uploaded_file(uploaded_file)
+            if error:
+                st.error(error)
             else:
-                st.error("Sample dataset not found. Run `python data/generate_dataset.py` first.")
+                st.session_state.raw_df = df
+                st.session_state.file_name = uploaded_file.name
+                st.success(f"Loaded **{uploaded_file.name}** — {len(df):,} rows × {len(df.columns)} columns")
+                st.dataframe(df.head(10), use_container_width=True)
 
     if st.session_state.raw_df is not None:
         st.markdown("---")
