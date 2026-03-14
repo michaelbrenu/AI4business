@@ -872,9 +872,10 @@ step_idx = st.session_state.current_step
 step_label = STEPS[step_idx]
 step_icon = STEP_ICONS[step_idx]
 
+_model_badge = ' <span style="font-size:0.75rem;font-weight:600;background:rgba(255,255,255,0.2);padding:2px 10px;border-radius:20px;vertical-align:middle;letter-spacing:0.03em;">gpt-4o-mini</span>' if ai_client else ""
 st.markdown(f"""
 <div class="main-header">
-    <h1>📊 AI-Powered Data Analysis & Visualization</h1>
+    <h1>📊 AI-Powered Data Analysis & Visualization{_model_badge}</h1>
     <p>Transform raw data into actionable insights with machine learning and AI narratives</p>
 </div>
 """, unsafe_allow_html=True)
