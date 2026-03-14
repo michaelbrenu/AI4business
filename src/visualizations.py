@@ -187,6 +187,35 @@ def chart_trend_over_time(df, time_col, value_col, group_col=None, title=None):
     return fig
 
 
+def chart_category_composition(df, primary_col, secondary_col, title=None):
+    """100% stacked bar showing how secondary_col is distributed within each primary_col group."""
+    title = title or f"{secondary_col.replace('_', ' ').title()} Composition by {primary_col.replace('_', ' ').title()}"
+
+    counts = (
+        df.groupby([primary_col, secondary_col])
+        .size()
+        .reset_index(name="count")
+    )
+    totals = counts.groupby(primary_col)["count"].transform("sum")
+    counts["pct"] = (counts["count"] / totals * 100).round(1)
+
+    fig = px.bar(
+        counts, x=primary_col, y="pct", color=secondary_col,
+        text=counts["pct"].apply(lambda v: f"{v:.1f}%"),
+        title=title,
+    )
+    fig.update_traces(textposition="inside", textfont_size=11)
+    fig.update_layout(
+        barmode="stack",
+        yaxis=dict(title="Proportion (%)", range=[0, 100]),
+        xaxis_title=primary_col.replace("_", " ").title(),
+        legend_title=secondary_col.replace("_", " ").title(),
+        template="plotly_white",
+        height=450,
+    )
+    return fig
+
+
 def chart_correlation_heatmap(df, numeric_columns, title="Correlation Heatmap"):
     """Heatmap of correlations between numeric columns."""
     plot_df = df[numeric_columns].apply(pd.to_numeric, errors="coerce")

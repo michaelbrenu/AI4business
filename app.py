@@ -14,7 +14,7 @@ from src.data_cleaner import apply_cleaning_actions, get_dynamic_filter_options,
 from src.visualizations import (
     chart_target_distribution, chart_correlation_scatter,
     chart_boxplot_by_category, chart_category_breakdown,
-    chart_trend_over_time,
+    chart_trend_over_time, chart_category_composition,
 )
 from src.predictive_model import train_model, predict_single
 from src.ai_narratives import get_openai_client, generate_data_summary, generate_visualization_insight, generate_predictive_insight, generate_full_report
@@ -1353,6 +1353,19 @@ elif st.session_state.current_step == 3:
         )
         st.plotly_chart(fig5, use_container_width=True)
         st.caption(f"Tracks how '{target_col}' changes over '{time_col}'. Useful for spotting upward or downward trends, seasonal patterns, and period-over-period shifts.")
+
+    # Chart 6: Category Composition
+    if len(categorical_cols) >= 2:
+        st.markdown("#### 6. Category Composition")
+        comp_col1, comp_col2 = st.columns(2)
+        with comp_col1:
+            comp_primary = st.selectbox("Group by (X axis)", categorical_cols, key="comp_primary")
+        with comp_col2:
+            comp_secondary_opts = [c for c in categorical_cols if c != comp_primary]
+            comp_secondary = st.selectbox("Break down by (Color)", comp_secondary_opts, key="comp_secondary")
+        fig6 = chart_category_composition(filtered_df, comp_primary, comp_secondary)
+        st.plotly_chart(fig6, use_container_width=True)
+        st.caption(f"Shows how '{comp_secondary}' is proportionally distributed within each '{comp_primary}' group. Useful for spotting imbalances and composition patterns across categories.")
 
     st.markdown("---")
     if st.button("➡️ Continue to Predictions", type="primary", use_container_width=True):
